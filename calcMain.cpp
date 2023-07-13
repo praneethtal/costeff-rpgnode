@@ -11,19 +11,25 @@ typedef std::unordered_map<std::string, int> Ene;
 
 class Node
 {
-public:
-    std::string name;
-    int ap_cost = 0;
-    Mats Materials;
-    Ene Enemies;
+private:
+    std::string ename;
+    int eap_cost;
+    Mats eMaterials;
+    Ene eEnemies;
 
+public:
+    Ene Enemies = eEnemies;
     void update(std::string n, int ap, Mats mats, Ene ene)
     {
-        name = n;
-        ap_cost = ap;
-        Materials = mats;
-        Enemies = ene;
+        ename = n;
+        eap_cost = ap;
+        eMaterials = mats;
+        eEnemies = ene;
+        Enemies = eEnemies;
     }
+
+    int ap_cost(){return eap_cost;}
+    std::string name(){return ename;}
 };
 
 typedef std::unordered_map<Node*,int> NT;
@@ -142,7 +148,7 @@ void effFarm(std::vector<Node*>& nodes, int n, Ene currEne, Pair visited, std::v
         //Included
 
         visited.first[nodes[n]]++;
-        visited.second += nodes[n]->ap_cost;
+        visited.second += nodes[n]->ap_cost();
 
         includeNode(currEne, nodes[n]->Enemies, reqEne);
 
@@ -266,7 +272,7 @@ int main()
 
         for(auto x: p.first)
         {
-            std::cout << x.first->name << ": " << x.second << " time(s), ";
+            std::cout << x.first->name() << ": " << x.second << " time(s), ";
         }
 
         std::cout << "at the cost of " << p.second << " AP. \n";
