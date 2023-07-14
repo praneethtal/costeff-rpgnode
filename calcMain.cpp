@@ -233,15 +233,14 @@ int main()
 
     Ene eneD;
     eneD["D"] = 1;
-    eneD["E"] = 5;
+    eneD["E"] = 1;
 
     Ene eneE;
-    eneE["G"] = 6;
+    eneE["G"] = 3;
     eneE["F"] = 2;
 
     Ene eneF;
     eneF["D"] = 5;
-    eneF["E"] = 7;
 
     Mats matEmpty;
 
@@ -263,7 +262,7 @@ int main()
     Node* n6 = {new Node};
     n6->update("Node6", 30, matEmpty, eneF);
 
-    std::vector<Node*> allNodes = {x,y,z,n4,n5};
+    std::vector<Node*> allNodes = {x,y,z,n4,n5,n6};
     std::unordered_set<std::string> availableEnm;
     for(Node* n: allNodes)
     {
@@ -315,7 +314,7 @@ int main()
     std::vector<Pair> result;
 
     //Calling function
-    effFarm(nodes, 2, currEne, visited, result, reqEne);
+    effFarm(nodes, nodes.size() - 1, currEne, visited, result, reqEne);
 
     //Sorting according to the stamina cost with lambda function (Lowest to Highest)
     std::sort(result.begin(), result.end(), [](Pair a, Pair b){
