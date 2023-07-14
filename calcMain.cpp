@@ -18,7 +18,7 @@ private:
     Ene eEnemies;
 
 public:
-    Ene Enemies = eEnemies;
+    Ene Enemies;
     void update(std::string n, int ap, Mats mats, Ene ene)
     {
         ename = n;
@@ -163,6 +163,58 @@ void effFarm(std::vector<Node*>& nodes, int n, Ene currEne, Pair visited, std::v
     }
 }
 
+
+//Function to take input.
+void takeInput(Ene& reqEne, std::unordered_set<std::string>& availableEnm)
+{
+    int status = 1;
+    while(true)
+    {
+        std::string ins = "BLANK";
+        while(availableEnm.find(ins) == availableEnm.end())
+        {
+            std::cout << "Please enter the type of enemy. Enter DONE to confirm. \n";
+            std::cin >> ins;
+            if(ins == "DONE")
+            {
+                status = 0;
+                break;
+            }
+            if( availableEnm.find(ins) == availableEnm.end() )
+            {
+                std::cout << "Enemy not found in database. \n";
+            }
+        }
+
+        if(status == 0)
+        {
+            break;
+        }
+
+        int incount = 11;
+        while(incount > 10 || incount < 1)
+        {
+            std::cout << "Please enter the count of enemies (1-10). Enter 99 to confirm. \n";
+            std::cin >> incount;
+            if(incount == 99)
+            {   
+                status = 0;
+                break;
+            }
+            if( incount > 10 || incount < 1 )
+            {
+                std::cout << "Please enter in the range of 1 - 10 only. \n";
+            }
+        }
+
+        if(status == 0)
+        {
+            break;
+        }
+        reqEne[ins] = incount;
+    }
+}
+
 int main()
 {
     // Data starts here. v 
@@ -212,6 +264,14 @@ int main()
     n6->update("Node6", 30, matEmpty, eneF);
 
     std::vector<Node*> allNodes = {x,y,z,n4,n5};
+    std::unordered_set<std::string> availableEnm;
+    for(Node* n: allNodes)
+    {
+        for(auto x: n->Enemies)
+        {
+            availableEnm.insert(x.first);
+        }
+    }
 
     std::unordered_map<std::string, std::vector<Node*>> umap;
 
@@ -228,9 +288,7 @@ int main()
     std::unordered_set<Node*> eligibleNodes; //To find nodes which contain one or more of the given Enemies.
 
     Ene reqEne; //Required enemies. (Can be changed to input to console or through GUI if needed)
-    reqEne["A"] = 4;
-    reqEne["B"] = 2;
-    reqEne["C"] = 1;
+    takeInput(reqEne, availableEnm);
 
     for(auto x: reqEne)
     {
